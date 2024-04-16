@@ -17,7 +17,7 @@ jobs:
         run: composer update && composer install --no-interaction --prefer-dist
 
       - name: Generate PHPDoc
-        run: vendor/bin/phpdoc -d src/ -t docs
+        run: composer require phpdocumentor/phpdocumentor && vendor/bin/phpdoc -d src -t docs
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
