@@ -1,23 +1,24 @@
-name: Generate PHPDoc
+name: Generate and Publish Documentation
 
 on:
   push:
     branches:
-      - main  # adjust this branch name as needed
+      - main  # Change to your default branch
       - addPHPDocs
 
 jobs:
-  phpdoc:
+  generate-docs:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Install PHP dependencies
-        run: composer update && composer install --no-interaction --prefer-dist
+      - name: Install phpDocumentor
+        run: composer install
 
-      - name: Generate PHPDoc
-        run: composer require phpdocumentor/phpdocumentor && vendor/bin/phpdoc -d src -t docs
+      - name: Generate Documentation
+        run: vendor/bin/phpdoc -d ./src -t docs
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

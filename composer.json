@@ -14,6 +14,7 @@
     "ext-curl": "*",
     "ext-json": "*",
     "php": ">=7.2",
+    "phpdocumentor/phpdocumentor": "^3.2.0",
     "guzzlehttp/psr7": "^2.1.0",
     "pubnub/pubnub": "^4.7.0|^6.0",
     "symfony/event-dispatcher": "^2|^3|^4|^5|^6",
