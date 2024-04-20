@@ -7,8 +7,13 @@ on:
       - addPHPDocs
 
 jobs:
-  generate-docs:
+  build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: [ 8.1, 8.0, 7.4 ]
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout repository
