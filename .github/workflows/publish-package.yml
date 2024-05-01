@@ -37,9 +37,13 @@ jobs:
           files: ./dist/ringcentral.phar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update Composer Version
+        run: composer config version ${{ github.ref }}
+
       - name: Publish to Packagist
-        env:
-          PACKAGIST_TOKEN: ${{ secrets.PACKAGIST_TOKEN }}
         run: |
-          composer config --global --auth http-basic.repo.packagist.com token $PACKAGIST_TOKEN
-          composer update --no-interaction    
+          composer config --global --auth http-basic.repo.packagist.com token ${{secrets.PACKAGIST_TOKEN}}
+          composer update && composer --no-interaction require vendor/package:${{ github.ref }} && composer update && composer --no-interaction config github-oauth.github.com ${{ secrets.GITHUB_TOKEN }} && composer --no-interaction update
+      
+      - name: Cleanup
+        run: composer clear-cache
