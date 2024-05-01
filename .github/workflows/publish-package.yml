@@ -37,8 +37,6 @@ jobs:
           files: ./dist/ringcentral.phar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Update Composer Version
-        run: composer config version ${{ github.ref }}
 
       - name: Publish to Packagist
         run: |
