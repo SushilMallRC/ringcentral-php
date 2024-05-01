@@ -38,11 +38,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Extract Version from Tag
+        if: matrix.php-version == '7.4' && startsWith(github.ref, 'refs/tags/')
+        id: extract_version
+        run: echo "::set-output name=version::${{ github.ref }}" 
+             
       - name: Publish to Packagist
         if: matrix.php-version == '7.4' && startsWith(github.ref, 'refs/tags/')
         run: |
+          version=$(echo "${{ steps.extract_version.outputs.version }}" | sed 's/refs\/tags\///')
           composer config --global --auth http-basic.repo.packagist.com token ${{secrets.PACKAGIST_TOKEN}}
-          composer update && composer --no-interaction require vendor/package:${{ github.ref }} && composer update && composer --no-interaction config github-oauth.github.com ${{ secrets.GITHUB_TOKEN }} && composer --no-interaction update
-      
+          composer update && composer --no-interaction require vendor/package:${version} && composer update && composer --no-interaction config github-oauth.github.com ${{ secrets.GITHUB_TOKEN }} && composer --no-interaction update
       - name: Cleanup
         run: composer clear-cache
