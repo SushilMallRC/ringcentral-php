@@ -30,16 +30,19 @@ jobs:
         run: composer test
       - name: Build phar
         run: composer phar
-      - name: Prepare Release
-        if: matrix.php-version == '7.4' && startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v1
-        with:
-          files: ./dist/ringcentral.phar
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Publish to Packagist
-        env:
-          PACKAGIST_TOKEN: ${{ secrets.PACKAGIST_TOKEN }}
+      - name: Extract tag name
+        id: get_tag
         run: |
-          composer config --global --auth http-basic.repo.packagist.com token $PACKAGIST_TOKEN
-          composer update --no-interaction    
+         TAG=${GITHUB_REF#refs/tags/}
+         echo "TAG=$TAG" >> $GITHUB_ENV
+      - name: Publish to Packagist
+        if: matrix.php-version == '7.4'
+        env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         PACKAGIST_API_TOKEN: ${{ secrets.PACKAGIST_API_TOKEN }}
+        run: |
+         TAG=${{ env.TAG }}
+         curl -X POST \
+          -H "Authorization: token $PACKAGIST_TOKEN" \
+          https://packagist.org/api/update-package?username=SushilMallRC&apiToken=$PACKAGIST_TOKEN \
+          -d '{"repository":{"url":"https://github.com/SushilMallRC/ringcentral-php","version":"'$TAG'"}}' 
