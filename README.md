@@ -1,4 +1,4 @@
-# RingCentral SDK for PHP
+# RingCentral SDK for PHp
 
 [![Build Status](https://github.com/ringcentral/ringcentral-php/workflows/CI%20Pipeline/badge.svg?branch=master)](https://github.com/ringcentral/ringcentral-php/actions)
 [![Coverage Status](https://coveralls.io/repos/ringcentral/ringcentral-php/badge.svg?branch=master&service=github)](https://coveralls.io/github/ringcentral/ringcentral-php?branch=master)
